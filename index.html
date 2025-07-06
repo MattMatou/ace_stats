@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Trophées Brawl Stars - API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: #ffd700;
+      text-align: center;
+      padding-top: 50px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+    .trophies {
+      font-size: 5em;
+      font-weight: bold;
+      letter-spacing: 5px;
+      text-shadow: 0 0 10px #ffd700, 0 0 20px #ffa500;
+    }
+    .error {
+      color: #ff4444;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Trophées Brawl Stars</h1>
+  <div class="trophies" id="trophies">Chargement...</div>
+  <div class="error" id="error"></div>
 
+  <script>
+    const playerTag = '2C2Q88GGR';
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjhmZWZjMmFjLWI2MDEtNGRiNi1iMzI2LWNlZjc3NzA3OTcxNCIsImlhdCI6MTc1MTc2MjMyNywic3ViIjoiZGV2ZWxvcGVyLzgxMTg1YmI1LTc4ZDktOGQzZC1mNzZlLTVlZDBjZTI4NjBmOSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMjE2LjU4LjIxNC43OCJdLCJ0eXBlIjoiY2xpZW50In1dfQ.I3nlAiRLoY6TTEd335V3_rsHNbCYxC_juwAlzsVNP0mEuZCYEV5h3_C-POVKoRjsFoRWw2aWtMvM6OMGjm25cA';
+
+    // L'URL API officielle Brawl Stars pour le profil joueur (tag sans #)
+    const url = `https://api.brawlstars.com/v1/players/%232C2Q88GGR`;
+
+    fetch(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      }
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Erreur API: ' + response.status);
+        return response.json();
+      })
+      .then(data => {
+        // Afficher le nombre de trophées total
+        const trophies = data.trophies;
+        document.getElementById('trophies').textContent = trophies;
+      })
+      .catch(error => {
+        document.getElementById('trophies').textContent = '-';
+        document.getElementById('error').textContent = error.message + " (probablement un problème CORS)";
+      });
+  </script>
+</body>
+</html>
